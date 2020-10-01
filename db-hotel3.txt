@@ -17,6 +17,36 @@ ON stanze.id = prenotazioni.stanza_id
 WHERE prenotazioni.id IS NULL;
 
 
+or
+
+
+SELECT stanze.id, prenotazioni.id
+FROM `prenotazioni`
+RIGHT JOIN stanze
+ON stanze.id = prenotazioni.stanza_id
+WHERE prenotazioni.stanza_id IS NULL;
+
+
+or
+
+
+SELECT stanze.id, COUNT(prenotazioni.id)
+FROM `prenotazioni`
+RIGHT JOIN stanze
+ON stanze.id = prenotazioni.stanza_id
+GROUP BY stanze.id
+HAVING COUNT(prenotazioni.id) = 0;
+
+
 3) Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
+
+
+
+SELECT COUNT(prenotazioni_has_ospiti.ospite_id), ospiti.id, ospiti.name, ospiti.lastname
+FROM prenotazioni_has_ospiti
+INNER JOIN ospiti
+ON prenotazioni_has_ospiti.ospite_id = ospiti.id
+GROUP BY ospiti.id
+HAVING COUNT(prenotazioni_has_ospiti.ospite_id)>'2';
 
 
